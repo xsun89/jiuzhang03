@@ -32,5 +32,11 @@ public class Main {
         while(it3.hasNext()){
             System.out.println(it3.next());
         }
+        System.out.println("---------------------------------------");
+        int Arr[] = new int[]{3,5,0,4,6,1,2,4};
+        solution.quickSort(Arr);
+
+        for (int i=0 ; i < Arr.length ; i++) System.out.print(Arr[i] + " ");
+        System.out.println();
     }
 }
