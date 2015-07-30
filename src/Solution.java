@@ -157,4 +157,96 @@ public class Solution {
 
         return Math.max(left, right) + 1;
     }
+
+    private int maxBalancedDepth(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        int left = maxBalancedDepth(root.left);
+        int right = maxBalancedDepth(root.right);
+
+        if(left == -1 || right == -1 || Math.abs(left - right) > 1){
+            return -1;
+        }
+
+        return Math.max(left, right) + 1;
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        return maxBalancedDepth(root) != -1;
+    }
+
+    public TreeNode getAncestor(TreeNode root, TreeNode node1, TreeNode node2) {
+        if (root == null || root == node1 || root == node2) {
+            return root;
+        }
+        TreeNode left = getAncestor(root.left, node1, node2);
+        TreeNode right = getAncestor(root.right, node1, node2);
+
+        if(left != null && right != null){
+            return root;
+        }
+        if(left != null){
+            return left;
+        }
+        if(right != null){
+            return right;
+        }
+
+        return null;
+    }
+
+    public int maxPathSumA(TreeNode root){
+        int max[] = new int[1];
+        max[0] = Integer.MIN_VALUE;
+        maxPathSumImpl(root, max);
+        return max[0];
+    }
+
+    private int maxPathSumImpl(TreeNode root, int[] max){
+        if(root == null){
+            return 0;
+        }
+
+        int left = maxPathSumImpl(root.left, max);
+        int right = maxPathSumImpl(root.right, max);
+
+        int csum = Math.max(root.val, Math.max(root.val+ left, root.val+ right));
+        max[0] = Math.max(max[0], Math.max(csum, left+root.val+right));
+
+        return csum;
+    }
+
+    private class ResultType {
+        // singlePath: 从root往下走到任意点的最大路径，这条路径可以不包含任何点
+        // maxPath: 从树中任意到任意点的最大路径，这条路径至少包含一个点
+        int singlePath, maxPath;
+        ResultType(int singlePath, int maxPath) {
+            this.singlePath = singlePath;
+            this.maxPath = maxPath;
+        }
+    }
+
+    private ResultType helper(TreeNode root) {
+        if (root == null) {
+            return new ResultType(0, Integer.MIN_VALUE);
+        }
+        // Divide
+        ResultType left = helper(root.left);
+        ResultType right = helper(root.right);
+
+        // Conquer
+        int singlePath = Math.max(left.singlePath, right.singlePath) + root.val;
+        singlePath = Math.max(singlePath, 0);
+
+        int maxPath = Math.max(left.maxPath, right.maxPath);
+        maxPath = Math.max(maxPath, left.singlePath + right.singlePath + root.val);
+
+        return new ResultType(singlePath, maxPath);
+    }
+
+    public int maxPathSum(TreeNode root) {
+        ResultType result = helper(root);
+        return result.maxPath;
+    }
 }

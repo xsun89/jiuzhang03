@@ -5,13 +5,15 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(100);
-        TreeNode a = new TreeNode(1);
-        TreeNode b = new TreeNode(2);
+        TreeNode root = new TreeNode(4);
+        TreeNode a = new TreeNode(3);
+        TreeNode b = new TreeNode(7);
         root.left = a;
         root.right = b;
-        a.left = new TreeNode(3);
-        a.right = new TreeNode(4);
+        TreeNode c = new TreeNode(5);
+        TreeNode d = new TreeNode(6);
+        b.left = c;
+        b.right = d;
 
         Solution solution = new Solution();
         List<Integer> ret = solution.preOrderStack(root);
@@ -38,5 +40,9 @@ public class Main {
 
         for (int i=0 ; i < Arr.length ; i++) System.out.print(Arr[i] + " ");
         System.out.println();
+
+        System.out.println("---------------------------------------");
+        TreeNode retNode = solution.getAncestor(root, a, c);
+        System.out.println(retNode.val);
     }
 }
